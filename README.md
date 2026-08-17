@@ -1,64 +1,72 @@
 # macOS Quick Actions
 
-Finder-Schnellaktionen zum Vergleichen von Dateien in VS Code.
+Finder quick actions for comparing files in VS Code.
 
-## Aktionen
+## Actions
 
-| Aktion | Zweck |
+| Action | Purpose |
 |---|---|
-| `Compare - Select First` | Merkt sich die markierte Datei in `~/.vscode-diff-first` |
-| `Compare - With This` | Vergleicht die gemerkte Datei mit der markierten in VS Code |
+| `Compare - Select First` | Remembers the selected file in `~/.vscode-diff-first` |
+| `Compare - With This` | Compares the remembered file with the selected one in VS Code |
 
-Für zwei Dateien im selben Ordner reicht die separate Aktion `Compare in VS Code`
-(nimmt beide markierten Dateien direkt entgegen).
+The names contain a hyphen, not a colon — that is the exact string to look for
+in the Services list.
 
-## Verwendung
+For two files in the same folder the separate `Compare in VS Code` action is
+enough (it takes both selected files directly).
 
-1. Ordner A → Rechtsklick auf Datei 1 → **Schnellaktionen → Compare: Select First**
-2. Ordner B → Rechtsklick auf Datei 2 → **Schnellaktionen → Compare: With This**
+## Usage
 
-VS Code öffnet die Diff-Ansicht, der gemerkte Pfad wird danach gelöscht.
+1. Folder A → right-click file 1 → **Quick Actions → Compare - Select First**
+2. Folder B → right-click file 2 → **Quick Actions → Compare - With This**
 
-## Installieren
+VS Code opens the diff view; the remembered path is deleted afterwards.
+
+## Install
 
 ```bash
 ./install.sh
 ```
 
-Kopiert alle `.workflow`-Bundles nach `~/Library/Services`, leert den Dienste-Cache
-und startet den Finder neu.
+Copies all `.workflow` bundles to `~/Library/Services`, flushes the services
+cache and restarts the Finder.
 
-## Neu bauen
+## Rebuild
 
 ```bash
 ./build.sh
 ```
 
-`build.sh` erzeugt die `.workflow`-Bundles aus Templates. Ein Bundle ist lediglich
-ein Ordner mit zwei XML-Property-Lists:
+`build.sh` generates the `.workflow` bundles from templates. A bundle is merely
+a folder holding two XML property lists:
 
 ```
 Compare - Select First.workflow/
 └── Contents/
-    ├── Info.plist        # Menüname, Kontext (Finder), akzeptierte Dateitypen
-    └── document.wflow    # Der Automator-Workflow inkl. Shell-Skript
+    ├── Info.plist        # menu name, context (Finder), accepted file types
+    └── document.wflow    # the Automator workflow including the shell script
 ```
 
-Das Shell-Skript steht im `document.wflow` unter
-`actions[0].action.ActionParameters.COMMAND_STRING`. Wer nur das Skript ändern will,
-kann es dort direkt editieren — oder `build.sh` anpassen und neu erzeugen.
+The shell script sits in `document.wflow` under
+`actions[0].action.ActionParameters.COMMAND_STRING`. To change only the script,
+edit it there directly — or adjust `build.sh` and regenerate.
 
-## Hinweise
+## Notes
 
-- `~/Library` ist im Finder ausgeblendet: ⇧⌘G und `~/Library/Services` eingeben,
-  oder dauerhaft mit `chflags nohidden ~/Library`.
-- Neue Dienste sind gelegentlich deaktiviert: Systemeinstellungen → Tastatur →
-  Tastaturkurzbefehle → Dienste → „Dateien und Ordner".
-- Dort lässt sich den Aktionen auch ein Tastaturkurzbefehl zuweisen.
-- Fehlersuche: Bundle mit Automator öffnen und **Ausführen** drücken — das
-  Protokoll zeigt die konkrete Fehlermeldung.
+- `~/Library` is hidden in Finder: ⇧⌘G and enter `~/Library/Services`, or
+  unhide it permanently with `chflags nohidden ~/Library`.
+- **A newly installed service can arrive disabled**, so it never appears in the
+  context menu even though the bundle is in place. Enable it — and assign a
+  keyboard shortcut while you are there — under System Settings → Keyboard →
+  Keyboard Shortcuts → **Services** → *Files and Folders*, where it is listed
+  under its exact name above.
+- If the action still does not appear, flush the cache and restart the Finder
+  again: `/System/Library/CoreServices/pbs -flush` then `killall Finder`.
+- Troubleshooting: open the bundle with Automator and press **Run** — the log
+  shows the actual error message instead of a silent failure.
 
-## Warum Git sinnvoll ist
+## Why git makes sense here
 
-Beide Dateien im Bundle sind reiner XML-Text, also gut versionierbar und diffbar.
-Finder zeigt `.workflow` als Paket an, Git behandelt es aber als normalen Ordner.
+Both files in the bundle are plain XML text, so they version and diff well.
+Finder displays `.workflow` as a package, but git treats it as an ordinary
+folder.
