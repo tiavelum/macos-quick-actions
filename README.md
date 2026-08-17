@@ -51,7 +51,7 @@ The shell script sits in `document.wflow` under
 `actions[0].action.ActionParameters.COMMAND_STRING`. To change only the script,
 edit it there directly — or adjust `build.sh` and regenerate.
 
-## Notes
+## Troubleshooting
 
 - `~/Library` is hidden in Finder: ⇧⌘G and enter `~/Library/Services`, or
   unhide it permanently with `chflags nohidden ~/Library`.
