@@ -60,7 +60,7 @@
 				<dict>
 					<key>COMMAND_STRING</key>
 					<string>printf %s "$1" &gt; "$HOME/.vscode-diff-first"
-osascript -e "display notification \"$(basename "$1")\" with title \"Fuer Vergleich gemerkt\"" 2&gt;/dev/null
+osascript -e "display notification \"$(basename "$1")\" with title \"Remembered for compare\"" 2&gt;/dev/null
 exit 0</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>

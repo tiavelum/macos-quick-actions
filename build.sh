@@ -187,7 +187,7 @@ WFLOW
 }
 
 SEL='printf %s "$1" &gt; "$HOME/.vscode-diff-first"
-osascript -e "display notification \"$(basename "$1")\" with title \"Fuer Vergleich gemerkt\"" 2&gt;/dev/null
+osascript -e "display notification \"$(basename "$1")\" with title \"Remembered for compare\"" 2&gt;/dev/null
 exit 0'
 
 WITH='STORE="$HOME/.vscode-diff-first"
@@ -195,7 +195,7 @@ CODE="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
 [ -x "$CODE" ] || CODE="$HOME/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
 [ -x "$CODE" ] || CODE="$(command -v code)"
 if [ ! -s "$STORE" ]; then
-  osascript -e "display alert \"Keine erste Datei gemerkt\" message \"Zuerst Compare: Select First auf eine Datei anwenden.\""
+  osascript -e "display alert \"No first file remembered\" message \"Apply 'Compare: Select First' to a file first.\""
   exit 0
 fi
 FIRST="$(cat "$STORE")"

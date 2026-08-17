@@ -6,8 +6,8 @@ Finder quick actions for comparing files in VS Code.
 
 | Action | Purpose |
 |---|---|
-| `Compare - Select First` | Remembers the selected file in `~/.vscode-diff-first` |
-| `Compare - With This` | Compares the remembered file with the selected one in VS Code |
+| `Compare: Select First` | Remembers the selected file in `~/.vscode-diff-first` |
+| `Compare: With This` | Compares the remembered file with the selected one in VS Code |
 
 The names contain a hyphen, not a colon — that is the exact string to look for
 in the Services list.
@@ -15,10 +15,17 @@ in the Services list.
 For two files in the same folder the separate `Compare in VS Code` action is
 enough (it takes both selected files directly).
 
+⚠️ **Two names, and they differ.** The bundle on disk is
+`Compare - Select First.workflow` — a colon is not legal in a file name. The
+menu entry macOS shows, and the string you search for in
+System Settings → Keyboard Shortcuts → Services, is `Compare: Select First`.
+The pair is set in `Info.plist`: the file name is the bundle, `NSMenuItem`
+is the menu text.
+
 ## Usage
 
-1. Folder A → right-click file 1 → **Quick Actions → Compare - Select First**
-2. Folder B → right-click file 2 → **Quick Actions → Compare - With This**
+1. Folder A → right-click file 1 → **Quick Actions → Compare: Select First**
+2. Folder B → right-click file 2 → **Quick Actions → Compare: With This**
 
 VS Code opens the diff view; the remembered path is deleted afterwards.
 
