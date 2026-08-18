@@ -1,4 +1,4 @@
-# macOS Quick Actions
+# mac-quick-actions
 
 Finder quick actions for comparing files in VS Code.
 
@@ -8,9 +8,6 @@ Finder quick actions for comparing files in VS Code.
 |---|---|
 | `Compare: Select First` | Remembers the selected file in `~/.vscode-diff-first` |
 | `Compare: With This` | Compares the remembered file with the selected one in VS Code |
-
-The names contain a hyphen, not a colon — that is the exact string to look for
-in the Services list.
 
 For two files in the same folder the separate `Compare in VS Code` action is
 enough (it takes both selected files directly).
@@ -111,3 +108,21 @@ move the app after granting, for the same reason.
 ⚠️ Match menu bar items on their `AXIdentifier`, not their label. The visible
 label is locale-dependent and is not the element's name, so
 `click menu bar item "Control Center"` fails.
+
+Why an application at all: macOS grants Accessibility **per running process,
+not per script**. From Automator's Run button it asks for *Automator*, from a
+Quick Action for the hidden `WorkflowServiceRunner`, from Shortcuts for
+*Shortcuts* — one script needs a grant per caller, and some callers cannot be
+granted reliably. The bundle is a stable identity holding one permanent
+grant, and the hotkey then only has to *launch an app*, which needs no
+permission.
+
+### When the hotkey does nothing
+
+| Symptom | Fix |
+|---|---|
+| `… is not allowed assistive access` | the caller has no grant → use the app, not the script |
+| Worked, then broke after moving the app | the grant is path-bound → remove the stale entry with **−**, launch, re-grant |
+| Worked, then broke after `./install.sh --rebuild` | the grant covers the old contents → remove the entry with **−**, launch, re-grant |
+| Toggle is on, access still denied | stale record → `tccutil reset Accessibility <bundle-id>`, then re-grant |
+| Hotkey only beeps | macOS never delivered the key → pick another combination |
